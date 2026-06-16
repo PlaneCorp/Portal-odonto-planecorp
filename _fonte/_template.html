@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Cotação Odontológica — PlaneCorp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@font-face{font-family:'AldoPlaneCorp';src:url('data:font/ttf;base64,@@ALDOPC_B64@@') format('truetype');font-display:block;}
+@font-face{font-family:'Aldo';src:url('data:font/ttf;base64,@@ALDO_B64@@') format('truetype');font-display:block;}
+
+:root{
+  --cyan:#00a4c5;--cyan-d:#0089a8;--cyan-l:#e6f6fa;--cyan-bd:#b5e6ef;
+  --navy:#002e6e;--navy-d:#00224f;
+  --ink:#1e293b;--slate:#475569;--muted:#64748b;--muted-2:#94a3b8;
+  --line:#e2e8f0;--line-2:#eef2f6;--bg:#f1f5f9;--bg-2:#f8fafc;--card:#fff;
+  --orange:#ff6b35;--ok:#0e9f6e;
+  --shadow:0 18px 44px -20px rgba(2,46,110,.32);--shadow-sm:0 8px 20px -12px rgba(2,46,110,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3{font-family:'Inter',sans-serif;font-weight:800;color:var(--navy);letter-spacing:-.01em;line-height:1.15}
+a{text-decoration:none;color:inherit}
+
+/* PlaneCorp logo */
+.pc-logo{display:inline-grid;grid-template-columns:min-content;line-height:.9;user-select:none}
+.pc-logo .pc-name{font-family:'AldoPlaneCorp','Montserrat',sans-serif;font-size:var(--pc,30px);line-height:.9;white-space:nowrap}
+.pc-logo .pc-gap{font-size:calc(var(--pc,30px) * .2326)}
+.pc-logo .pc-tag{font-family:'Aldo','Montserrat',sans-serif;font-size:calc(var(--pc,30px) * .2558);line-height:.9;letter-spacing:.04em;text-align:justify;text-align-last:justify;margin-top:2px}
+.pc-logo .p{color:#4ab8aa}.pc-logo .lane{color:#4ab8aa}.pc-logo .corp{color:#303d50}.pc-logo .pc-tag{color:#5a6a7a}
+.pc-logo.white .p,.pc-logo.white .lane,.pc-logo.white .corp,.pc-logo.white .pc-tag{color:#fff}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{max-width:1100px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topbar .tag{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;background:var(--bg-2);border:1px solid var(--line);padding:7px 13px;border-radius:999px}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 70%,#001a3d 100%);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-160px;top:-140px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(0,164,197,.5),rgba(0,164,197,0) 62%)}
+.hero .wrap{max-width:1100px;margin:0 auto;padding:54px 22px 46px;position:relative;z-index:1;text-align:center}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);background:rgba(0,164,197,.13);border:1px solid rgba(0,164,197,.34);padding:6px 14px;border-radius:999px}
+.hero h1{color:#fff;font-size:clamp(28px,4.6vw,46px);margin:18px auto 12px;max-width:20ch}
+.hero h1 .hl{color:var(--cyan)}
+.hero p{color:#c2d2e6;font-size:17px;max-width:56ch;margin:0 auto}
+
+/* operator cards */
+.shell{max-width:1100px;margin:0 auto;padding:42px 22px 30px;width:100%}
+.ops{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:820px){.ops{grid-template-columns:1fr;max-width:430px;margin:0 auto}}
+.op-card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-sm);padding:0 26px 26px;overflow:hidden;display:flex;flex-direction:column;transition:.18s}
+.op-card .accent{display:block;height:6px;margin:0 -26px 22px;background:var(--muted-2)}
+.op-card.active{cursor:pointer}
+.op-card.active .accent{background:linear-gradient(90deg,var(--cyan),var(--navy))}
+.op-card.active:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--cyan)}
+.op-card.soon{opacity:.92}
+.op-card.soon .accent{background:var(--line)}
+.op-logo{height:64px;display:flex;align-items:center;justify-content:flex-start;margin-bottom:14px}
+.op-logo img{max-height:52px;max-width:170px;width:auto}
+.wordmark{font-weight:800;font-size:27px;letter-spacing:-.02em;color:var(--navy)}
+.wordmark .b{color:var(--cyan-d)}
+.op-card h3{font-size:19px;margin-bottom:5px}
+.op-sub{font-size:12px;font-weight:700;color:var(--cyan-d);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.op-card.soon .op-sub{color:var(--muted-2)}
+.op-desc{font-size:13.5px;color:var(--slate);line-height:1.5}
+.op-facts{list-style:none;display:grid;gap:7px;margin:16px 0 20px}
+.op-facts li{font-size:12.8px;color:var(--slate);padding-left:22px;position:relative;line-height:1.3}
+.op-facts li::before{content:"✓";position:absolute;left:0;top:0;color:var(--cyan);font-weight:800}
+.op-card.soon .op-facts li::before{content:"•";color:var(--muted-2)}
+.op-cta{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px;border-radius:12px;font-weight:800;font-size:15px;background:var(--cyan);color:#fff;box-shadow:0 10px 22px -10px rgba(0,164,197,.85);transition:.15s}
+.op-card.active:hover .op-cta{background:var(--cyan-d)}
+.op-soon-tag{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:12px;font-weight:800;font-size:14px;background:var(--bg-2);color:var(--muted);border:1.5px dashed var(--line)}
+.badge-soon{position:absolute;top:16px;right:16px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--muted-2);padding:4px 10px;border-radius:999px}
+.badge-live{position:absolute;top:16px;right:16px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--ok);padding:4px 10px;border-radius:999px}
+
+.note{max-width:1100px;margin:6px auto 0;padding:0 22px;text-align:center;font-size:12.5px;color:var(--muted)}
+.compare-banner{display:flex;align-items:center;gap:18px;margin-top:22px;padding:22px 26px;border-radius:20px;text-decoration:none;color:#fff;background:linear-gradient(120deg,var(--navy),var(--navy-d) 55%,#063b5e);border:1px solid rgba(0,164,197,.4);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:.18s}
+.compare-banner::after{content:"";position:absolute;right:-80px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(0,164,197,.45),rgba(0,164,197,0) 65%)}
+.compare-banner:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--cyan)}
+.compare-banner .cb-icon{flex:none;width:54px;height:54px;border-radius:14px;background:rgba(0,164,197,.18);border:1px solid rgba(0,164,197,.4);display:grid;place-items:center;font-size:26px;position:relative;z-index:1}
+.compare-banner .cb-text{flex:1;position:relative;z-index:1}
+.compare-banner .cb-tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan)}
+.compare-banner .cb-title{font-size:20px;font-weight:800;color:#fff;margin:2px 0 3px;font-family:'Inter',sans-serif}
+.compare-banner .cb-sub{font-size:13.5px;color:#c2d2e6}
+.compare-banner .cb-cta{flex:none;background:var(--cyan);color:#fff;font-weight:800;font-size:15px;padding:13px 22px;border-radius:11px;position:relative;z-index:1;white-space:nowrap}
+@media(max-width:620px){.compare-banner{flex-direction:column;text-align:center}.compare-banner .cb-cta{width:100%;text-align:center}}
+
+/* footer */
+.site-foot{margin-top:auto;background:var(--navy);color:#9fb3cc;text-align:center;padding:26px 22px;font-size:12.5px}
+.site-foot .pc-logo{margin-bottom:10px}
+.site-foot a{color:var(--cyan)}
+/* login */
+.auth-gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--navy),var(--navy-d) 70%,#001a3d);display:flex;align-items:center;justify-content:center;padding:22px}
+.auth-card{background:#fff;border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6);padding:34px 30px;max-width:380px;width:100%;text-align:center}
+.auth-tag{margin-top:16px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan-d)}
+.auth-card h2{font-size:19px;margin:4px 0 6px;color:var(--navy)}
+.auth-card p{font-size:13px;color:var(--muted);margin-bottom:16px}
+.auth-card input{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:11px;font-size:15px;text-align:center;color:var(--ink)}
+.auth-card input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,164,197,.15)}
+.auth-card button{width:100%;margin-top:12px;padding:14px;border-radius:11px;background:var(--cyan);color:#fff;font-weight:800;font-size:15.5px;box-shadow:0 10px 22px -10px rgba(0,164,197,.85)}
+.auth-card button:hover{background:var(--cyan-d)}
+.auth-err{display:none;color:#dc2626;font-size:12.5px;font-weight:700;margin-top:10px}
+.logout{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;background:none;border:1px solid var(--line);padding:7px 12px;border-radius:999px;cursor:pointer}
+.logout:hover{border-color:var(--cyan);color:var(--cyan-d)}
+</style>
+</head>
+<body>
+
+<div id="authGate" class="auth-gate">
+  <div class="auth-card">
+    <div class="pc-logo" style="--pc:34px;justify-items:center;margin:0 auto">
+      <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+      <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+    </div>
+    <div class="auth-tag">🔒 Acesso restrito</div>
+    <h2>Portal de Cotação Odontológica</h2>
+    <p>Informe a senha de acesso para continuar.</p>
+    <input type="password" id="authPass" placeholder="Senha" autocomplete="current-password">
+    <button id="authBtn">Entrar</button>
+    <div class="auth-err" id="authErr">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+<script>
+(function(){var EXPECT=3605477971;
+function djb(s){var x=5381;for(var i=0;i<s.length;i++){x=(x*33+s.charCodeAt(i))>>>0;}return x;}
+var g=document.getElementById('authGate');
+if(localStorage.getItem('pc_auth')==='ok'){g.parentNode.removeChild(g);return;}
+document.documentElement.style.overflow='hidden';
+function go(){var v=document.getElementById('authPass').value;
+ if(djb(v)===EXPECT){localStorage.setItem('pc_auth','ok');document.documentElement.style.overflow='';g.parentNode.removeChild(g);}
+ else{document.getElementById('authErr').style.display='block';var p=document.getElementById('authPass');p.value='';p.focus();}}
+document.getElementById('authBtn').onclick=go;
+document.getElementById('authPass').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+setTimeout(function(){var p=document.getElementById('authPass');if(p)p.focus();},120);
+})();
+</script>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="pc-logo" style="--pc:30px">
+      <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+      <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="tag">Portal de Cotação Odontológica</span>
+      <button class="logout" onclick="localStorage.removeItem('pc_auth');location.reload()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">PlaneCorp · Planos Odontológicos</span>
+    <h1>Escolha a operadora e gere a <span class="hl">proposta na hora</span></h1>
+    <p>Selecione abaixo a operadora odontológica para montar o plano, calcular o investimento e gerar a proposta em A4 pronta para o cliente.</p>
+  </div>
+</section>
+
+<main class="shell">
+  <div class="ops">
+
+    <!-- AMIL -->
+    <a class="op-card active" href="../Amil-Dental-PlaneCorp/index.html">
+      <span class="accent"></span>
+      <span class="badge-live">Disponível</span>
+      <div class="op-logo"><img src="data:image/png;base64,@@AMIL_B64@@" alt="Amil Dental"></div>
+      <h3>Amil Dental</h3>
+      <div class="op-sub">PF &amp; PME</div>
+      <p class="op-desc">Planos individuais, familiares e empresariais com ampla rede credenciada.</p>
+      <ul class="op-facts">
+        <li>5 planos (Bronze ao Platinum)</li>
+        <li>De 1 a 99 vidas</li>
+        <li>Abrangência nacional · sem coparticipação</li>
+        <li>Proposta A4 em segundos</li>
+      </ul>
+      <span class="op-cta">Cotar agora →</span>
+    </a>
+
+    <!-- ODONTOPREV -->
+    <a class="op-card active" href="../OdontoPrev-PlaneCorp/index.html">
+      <span class="accent"></span>
+      <span class="badge-live">Disponível</span>
+      <div class="op-logo"><img src="data:image/jpeg;base64,@@ODONTO_B64@@" alt="OdontoPrev"></div>
+      <h3>OdontoPrev</h3>
+      <div class="op-sub">PF · MEI · PME</div>
+      <p class="op-desc">Maior operadora odontológica do país, com ampla rede credenciada.</p>
+      <ul class="op-facts">
+        <li>PF (6 planos), MEI e PME</li>
+        <li>De 1 a 199 vidas</li>
+        <li>Proposta A4 em segundos</li>
+      </ul>
+      <span class="op-cta">Cotar agora →</span>
+    </a>
+
+    <!-- DENTAL UNI -->
+    <a class="op-card active" href="../DentalUni-PlaneCorp/index.html">
+      <span class="accent"></span>
+      <span class="badge-live">Disponível</span>
+      <div class="op-logo"><img src="data:image/png;base64,@@DENTALUNI_B64@@" alt="Dental Uni"></div>
+      <h3>Dental Uni</h3>
+      <div class="op-sub">PF &amp; PME</div>
+      <p class="op-desc">Cooperativa odontológica nacional com opção de carência zero e sem coparticipação.</p>
+      <ul class="op-facts">
+        <li>3 planos (Essencial, Amplo DOC, Elite)</li>
+        <li>De 1 a 99 vidas</li>
+        <li>Proposta A4 em segundos</li>
+      </ul>
+      <span class="op-cta">Cotar agora →</span>
+    </a>
+
+  </div>
+
+  <a class="compare-banner" href="../Comparativo-Odonto-PlaneCorp/index.html">
+    <div class="cb-icon">📊</div>
+    <div class="cb-text">
+      <div class="cb-tag">Ferramenta exclusiva</div>
+      <div class="cb-title">Comparar planos das 3 operadoras</div>
+      <div class="cb-sub">Monte um comparativo lado a lado (Amil × OdontoPrev × Dental Uni) e gere em A4 para o cliente.</div>
+    </div>
+    <span class="cb-cta">Comparar planos →</span>
+  </a>
+
+  <p class="note">Logos e tabelas conforme material oficial de cada operadora. Valores de referência — confirme a tabela vigente antes do envio.</p>
+</main>
+
+<footer class="site-foot">
+  <div class="pc-logo white" style="--pc:26px;justify-items:center">
+    <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+    <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+  </div>
+  <div>contato@planecorp.com.br · (41) 9990-2288 · <a href="https://www.planecorp.com.br">www.planecorp.com.br</a></div>
+  <div style="margin-top:6px;font-size:11px;opacity:.7">Corretora autorizada · Ferramenta de uso interno comercial</div>
+</footer>
+
+</body>
+</html>
