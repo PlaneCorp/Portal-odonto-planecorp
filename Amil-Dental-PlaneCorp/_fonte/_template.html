@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>if(localStorage.getItem('pc_auth')!=='ok')location.replace('../Portal-Cotacao-Odonto-PlaneCorp/index.html');</script>
+<title>Amil Dental · Gerador de Propostas — PlaneCorp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@font-face{font-family:'AldoPlaneCorp';src:url('data:font/ttf;base64,@@ALDOPC_B64@@') format('truetype');font-display:block;}
+@font-face{font-family:'Aldo';src:url('data:font/ttf;base64,@@ALDO_B64@@') format('truetype');font-display:block;}
+
+:root{
+  --cyan:#00a4c5; --cyan-d:#0089a8; --cyan-l:#e6f6fa; --cyan-bd:#b5e6ef;
+  --navy:#002e6e; --navy-d:#00224f; --navy-2:#0a3d82;
+  --ink:#1e293b; --slate:#475569; --muted:#64748b; --muted-2:#94a3b8;
+  --line:#e2e8f0; --line-2:#eef2f6; --bg:#f1f5f9; --bg-2:#f8fafc; --card:#fff;
+  --blue-l:#eff6ff; --blue-bd:#bfdbfe;
+  --orange:#ff6b35; --ok:#0e9f6e;
+  --radius:16px; --radius-sm:11px;
+  --shadow:0 14px 38px -18px rgba(2,46,110,.28);
+  --shadow-sm:0 6px 16px -10px rgba(2,46,110,.22);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Inter',sans-serif;font-weight:800;line-height:1.15;color:var(--navy);letter-spacing:-.01em}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select{font-family:inherit;font-size:15px}
+a{color:var(--cyan-d);text-decoration:none}
+
+/* ---------- PlaneCorp logo (cores oficiais da marca) ---------- */
+.pc-logo{display:inline-grid;grid-template-columns:min-content;line-height:.9;user-select:none}
+.pc-logo .pc-name{font-family:'AldoPlaneCorp','Montserrat',sans-serif;font-size:var(--pc,30px);line-height:.9;white-space:nowrap}
+.pc-logo .pc-gap{font-size:calc(var(--pc,30px) * .2326)}
+.pc-logo .pc-tag{font-family:'Aldo','Montserrat',sans-serif;font-size:calc(var(--pc,30px) * .2558);line-height:.9;letter-spacing:.04em;text-align:justify;text-align-last:justify;margin-top:2px}
+.pc-logo .p{color:#4ab8aa}.pc-logo .lane{color:#4ab8aa}.pc-logo .corp{color:#303d50}.pc-logo .pc-tag{color:#5a6a7a}
+.pc-logo.white .p,.pc-logo.white .lane,.pc-logo.white .corp,.pc-logo.white .pc-tag{color:#fff}
+
+/* ---------- Amil Dental logo (gradiente azul -> roxo, oficial) ---------- */
+.amil{display:inline-flex;flex-direction:column;align-items:center;line-height:.82;font-family:'Inter',sans-serif;text-transform:lowercase}
+.amil .a-word{font-weight:800;font-size:1em;letter-spacing:-.04em;
+  background:linear-gradient(95deg,#1414cf 0%,#3322e2 38%,#7a27e0 78%,#9b27d6 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.amil .a-sub{font-weight:700;font-size:.4em;letter-spacing:.04em;color:#4274d8;margin-top:.1em}
+/* logo oficial via imagem (amil-dental.png na pasta); recriação só como fallback */
+.amil-wrap{display:inline-flex;align-items:center;line-height:0}
+.amil-img{height:var(--ah,24px);width:auto;display:block}
+.amil-fb{font-size:calc(var(--ah,24px) / 1.4) !important}
+.amil-img + .amil-fb{display:none}
+
+/* ---------- Top bar ---------- */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{max-width:1180px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.home-link{display:flex;align-items:center;gap:12px;text-decoration:none;transition:.15s}
+.home-back{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--bg-2);border:1px solid var(--line);color:var(--navy);font-size:19px;font-weight:800;flex:none;transition:.15s}
+.home-link:hover .home-back{background:var(--cyan-l);border-color:var(--cyan);color:var(--cyan-d)}
+.home-link:hover .pc-logo{opacity:.85}
+.op-badge{display:flex;align-items:center;gap:10px;background:var(--bg-2);border:1px solid var(--line);padding:7px 14px;border-radius:10px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.op-badge .amil{font-size:18px}
+
+/* ---------- Hero ---------- */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 70%,#001a3d 100%);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-160px;top:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(0,164,197,.55),rgba(0,164,197,0) 62%)}
+.hero .wrap{max-width:1180px;margin:0 auto;padding:42px 22px 38px;position:relative;z-index:1}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);background:rgba(0,164,197,.13);border:1px solid rgba(0,164,197,.34);padding:6px 13px;border-radius:999px}
+.hero h1{color:#fff;font-size:clamp(27px,4.4vw,44px);margin:16px 0 12px;max-width:19ch;font-weight:800}
+.hero h1 .hl{color:var(--cyan)}
+.hero p{color:#c2d2e6;font-size:16.5px;max-width:60ch}
+.hero .steps{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.hero .steps span{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#dbe6f2;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);padding:8px 13px;border-radius:9px}
+.hero .steps b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--cyan);color:#fff;font-size:12px;font-weight:800}
+
+/* ---------- Layout ---------- */
+.shell{max-width:1180px;margin:0 auto;padding:28px 22px 70px;display:grid;grid-template-columns:1fr 360px;gap:26px;align-items:start}
+@media(max-width:920px){.shell{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.step{padding:22px 24px;border-bottom:1px solid var(--line-2)}
+.step:last-child{border-bottom:none}
+.step.dim{opacity:.45;pointer-events:none;filter:saturate(.4)}
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.step-num{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--cyan-l);color:var(--cyan-d);font-weight:800;font-size:15px}
+.step-head h3{font-size:18px;font-weight:800}
+.step-head .hint{font-size:13px;color:var(--muted);font-weight:500;margin-left:auto}
+
+/* choices */
+.choices{display:grid;gap:12px}
+.choices.two{grid-template-columns:1fr 1fr}
+@media(max-width:520px){.choices.two{grid-template-columns:1fr}}
+.opt{position:relative;display:flex;gap:13px;align-items:flex-start;padding:15px 16px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;text-align:left;transition:.16s}
+.opt:hover{border-color:var(--cyan);background:var(--cyan-l)}
+.opt.sel{border-color:var(--cyan);background:var(--cyan-l);box-shadow:0 0 0 3px rgba(0,164,197,.16)}
+.opt .ic{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:19px}
+.opt.sel .ic{background:var(--cyan)}
+.opt .t{display:block;font-weight:700;font-size:15.5px;color:var(--navy)}
+.opt .d{display:block;font-size:12.8px;color:var(--muted);margin-top:2px}
+.opt .check{position:absolute;top:10px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-size:12px}
+.opt.sel .check{background:var(--cyan);border-color:var(--cyan)}
+
+/* fields */
+.field-row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);transition:.15s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,164,197,.15)}
+.stepper{display:flex;align-items:stretch;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;width:148px}
+.stepper button{width:42px;background:var(--bg);color:var(--navy);font-size:21px;font-weight:700}
+.stepper button:hover{background:var(--cyan-l);color:var(--cyan-d)}
+.stepper input{width:64px;border:none;text-align:center;font-size:18px;font-weight:800;color:var(--navy)}
+.stepper input:focus{outline:none}
+.faixa-badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--navy);background:var(--bg-2);border:1px solid var(--line);padding:8px 13px;border-radius:9px}
+.faixa-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan)}
+.mini-toggle{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.mini-toggle button{padding:11px 18px;font-weight:700;font-size:14px;color:var(--muted);background:#fff}
+.mini-toggle button.on{background:var(--navy);color:#fff}
+
+/* plan cards */
+.plans{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:13px}
+.plan{position:relative;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:15px;background:#fff;text-align:left;transition:.16s}
+.plan:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.plan.sel{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,164,197,.16),var(--shadow-sm)}
+.plan .tier{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan-d)}
+.plan .pname{font-size:16px;font-weight:800;color:var(--navy);margin:3px 0 2px;line-height:1.1}
+.plan .proc{font-size:11.5px;color:var(--muted)}
+.plan .resumo{font-size:11.8px;color:var(--muted);margin-top:8px;min-height:46px;line-height:1.32}
+.plan .priceline{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
+.plan .pvida{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.plan .pval{font-size:22px;font-weight:800;color:var(--navy);line-height:1}
+.plan .pval small{font-size:12px;font-weight:600;color:var(--muted)}
+.plan .ptot{font-size:11.5px;color:var(--cyan-d);font-weight:700;margin-top:3px}
+.plan .pick{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line)}
+.plan.sel .pick{background:var(--cyan);border-color:var(--cyan);box-shadow:inset 0 0 0 3px #fff}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2 .full{grid-column:1/-1}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+
+/* summary */
+.summary{position:sticky;top:84px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.summary .sum-top{background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;padding:18px 20px}
+.summary .sum-top .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.summary .sum-top h4{color:#fff;font-size:19px;margin-top:3px;font-weight:800}
+.summary .sum-body{padding:18px 20px}
+.sum-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--line-2)}
+.sum-row .k{color:var(--muted)}.sum-row .v{font-weight:700;color:var(--navy);text-align:right}
+.sum-total{margin-top:14px;background:var(--cyan-l);border:1px solid var(--cyan-bd);border-radius:var(--radius-sm);padding:14px 16px}
+.sum-total .k{font-size:11px;color:var(--cyan-d);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.sum-total .v{font-size:30px;font-weight:800;color:var(--navy);line-height:1.05}
+.sum-total .v small{font-size:14px;font-weight:600;color:var(--muted)}
+.sum-total .sub{font-size:12px;color:var(--slate);margin-top:3px;font-weight:600}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border-radius:12px;font-weight:800;font-size:15.5px;transition:.15s}
+.btn-primary{background:var(--cyan);color:#fff;box-shadow:0 10px 22px -10px rgba(0,164,197,.85)}
+.btn-primary:hover{background:var(--cyan-d)}
+.btn-primary:disabled{background:#c2cdd6;color:#fff;box-shadow:none;cursor:not-allowed}
+.sum-note{font-size:11px;color:var(--muted-2);text-align:center;margin-top:12px;line-height:1.4}
+
+/* ===================== PROPOSAL (A4) ===================== */
+.proposal-stage{display:none;position:fixed;inset:0;z-index:80;background:#475569;overflow:auto;padding:26px 0 70px}
+body.show-proposal .proposal-stage{display:block}
+body.show-proposal{overflow:hidden}
+.p-toolbar{position:fixed;top:0;left:0;right:0;z-index:90;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.p-toolbar .pt-title{font-size:14px;font-weight:600;color:#cfd9e8;display:flex;align-items:center;gap:10px}
+.p-toolbar .pt-actions{display:flex;gap:10px}
+.p-toolbar button{padding:10px 18px;border-radius:9px;font-weight:700;font-size:14px}
+.pt-print{background:var(--cyan);color:#fff}.pt-print:hover{background:var(--cyan-d)}
+.pt-back{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}.pt-back:hover{background:rgba(255,255,255,.1)}
+
+.page{width:210mm;min-height:296mm;margin:64px auto 0;background:#fff;box-shadow:0 18px 50px rgba(0,0,0,.35);position:relative;color:var(--slate)}
+.doc{padding:9mm 13mm 7mm}
+
+/* doc header */
+.doc-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:3px solid var(--cyan)}
+.doc-head .dh-op{text-align:right}
+.doc-head .dh-op .lbl{font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2);font-weight:800;margin-bottom:4px}
+.doc-head .amil{font-size:26px}
+.title-bar{display:flex;align-items:center;gap:10px;margin-top:9px}
+.title-bar .tb-tag{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--cyan);padding:4px 10px;border-radius:5px}
+.title-bar h1{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:.01em}
+
+/* info row */
+.inforow{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:9px}
+.inforow .ic{padding:8px 13px;border-right:1px solid var(--line-2)}
+.inforow .ic:last-child{border-right:none}
+.inforow .k{font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-2);font-weight:800}
+.inforow .v{font-size:12.5px;font-weight:700;color:var(--navy);margin-top:2px;line-height:1.25}
+.inforow .v small{display:block;font-size:10.5px;font-weight:600;color:var(--muted)}
+
+/* section title */
+.sec{display:flex;align-items:center;gap:8px;margin:4.5mm 0 2.4mm}
+.sec .bar{width:4px;height:15px;border-radius:3px;background:var(--cyan)}
+.sec h2{font-size:12.5px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.05em}
+.sec .num{margin-left:auto;font-size:10px;color:var(--muted-2);font-weight:700}
+
+/* plano selecionado */
+.plan-box{display:grid;grid-template-columns:1fr 200px;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.plan-box .pb-left{padding:14px 16px}
+.plan-box .pb-meta{font-size:10px;font-weight:700;color:var(--cyan-d);text-transform:uppercase;letter-spacing:.04em}
+.plan-box .pb-name{font-size:22px;font-weight:800;color:var(--navy);line-height:1.04;margin:3px 0 6px}
+.plan-box .pb-desc{font-size:11.5px;color:var(--slate);line-height:1.42;max-width:52ch}
+.plan-box .pb-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.plan-box .tag{font-size:10px;font-weight:700;color:var(--navy);background:var(--bg-2);border:1px solid var(--line);padding:4px 9px;border-radius:6px}
+.plan-box .tag.blue{background:var(--blue-l);border-color:var(--blue-bd);color:var(--navy-2)}
+/* valor box: unitario grande, total menor abaixo */
+.valor{background:linear-gradient(150deg,var(--navy),var(--navy-d));color:#fff;padding:14px 16px;display:flex;flex-direction:column;justify-content:center}
+.valor .vb-l{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);font-weight:800}
+.valor .vb-big{font-size:30px;font-weight:800;line-height:1;margin-top:3px;letter-spacing:-.01em}
+.valor .vb-big small{font-size:13px;font-weight:600;opacity:.85}
+.valor .vb-total{font-size:11px;color:#c7d6ec;margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.22);font-weight:600}
+.valor .vb-total b{color:#fff;font-weight:800}
+.valor .vb-tag{align-self:flex-start;margin-top:8px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:var(--orange);padding:3px 9px;border-radius:5px}
+
+/* coberturas */
+.cov{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cov .cc{padding:12px 15px}
+.cov .cc:first-child{border-right:1px solid var(--line-2);background:var(--bg-2)}
+.cov .cc h3{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.cov .cc h3 .pill{font-size:8.5px;background:var(--cyan);color:#fff;padding:2px 7px;border-radius:5px;font-weight:800;letter-spacing:.03em}
+.cov .cc.diff h3 .pill{background:var(--orange)}
+.cov ul{list-style:none;display:grid;gap:5px}
+.cov li{font-size:10.6px;color:var(--slate);padding-left:17px;position:relative;line-height:1.28}
+.cov li b{color:var(--navy);font-weight:700}
+.cov li::before{content:"";position:absolute;left:0;top:3px;width:11px;height:11px;border-radius:50%;background:var(--cyan-l);border:1.5px solid var(--cyan)}
+.cov .cc.diff li::before{background:#ffe9df;border-color:var(--orange)}
+
+/* beneficios */
+.bens{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:3mm}
+.ben{border:1px solid var(--line);border-radius:10px;padding:10px 13px;display:flex;gap:10px;align-items:flex-start;background:#fff}
+.ben .bi{flex:none;width:30px;height:30px;border-radius:8px;background:var(--blue-l);color:var(--navy-2);display:grid;place-items:center;font-size:15px}
+.ben .bt{font-size:11.5px;font-weight:800;color:var(--navy);line-height:1.1}
+.ben .bd{font-size:10.3px;color:var(--muted);margin-top:2px;line-height:1.32}
+
+/* carencia + condicoes */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:3mm}
+.panel{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.panel .ph{background:var(--bg-2);border-bottom:1px solid var(--line);padding:8px 13px;display:flex;align-items:center;gap:7px}
+.panel .ph h3{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em}
+.panel .ph .ci{color:var(--cyan-d);font-size:13px}
+.panel .ph .badge{margin-left:auto;font-size:8.5px;font-weight:800;color:#fff;background:var(--cyan);padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.03em}
+.panel .ph .badge.ok{background:var(--ok)}
+.panel .pbd{padding:4px 13px 10px}
+.car-table{width:100%;border-collapse:collapse;font-size:10.3px}
+.car-table td{padding:6px 2px;border-bottom:1px solid var(--line-2);color:var(--slate);line-height:1.2}
+.car-table tr:last-child td{border-bottom:none}
+.car-table td:last-child{text-align:right;font-weight:800;color:var(--navy);white-space:nowrap}
+.car-table td.ok{color:var(--ok)}
+.cond{list-style:none;display:grid;gap:7px;padding-top:6px}
+.cond li{font-size:10.5px;color:var(--slate);padding-left:16px;position:relative;line-height:1.34}
+.cond li b{color:var(--navy);font-weight:700}
+.cond li::before{content:"";position:absolute;left:0;top:4px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+
+/* footer */
+.doc-foot{display:grid;grid-template-columns:230px 1fr;gap:16px;margin-top:6mm;border-top:1px solid var(--line);padding-top:9px}
+.consultor .cl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan-d);margin-bottom:4px}
+.consultor .cn{font-size:13px;font-weight:800;color:var(--navy)}
+.consultor .cd{font-size:10.5px;color:var(--muted);line-height:1.55;margin-top:2px}
+.consultor .cd b{color:var(--navy)}
+.legal h4{font-size:9.5px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.legal p{font-size:8.4px;color:var(--muted-2);line-height:1.42;text-align:justify}
+.doc-strip{display:flex;justify-content:space-between;align-items:center;margin-top:7px;padding-top:7px;border-top:1px solid var(--line-2);font-size:8.5px;color:var(--muted-2);font-weight:600}
+
+/* site footer */
+.site-foot{background:var(--navy);color:#9fb3cc;text-align:center;padding:26px 22px;font-size:12.5px}
+.site-foot .pc-logo{margin-bottom:10px}
+.site-foot a{color:var(--cyan)}
+
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  body.show-proposal .topbar,body.show-proposal .hero,body.show-proposal .shell,body.show-proposal .site-foot,.p-toolbar{display:none !important}
+  .proposal-stage{position:static;display:block;background:#fff;padding:0;overflow:visible}
+  .page{width:233.3mm;min-height:auto;margin:0 auto;box-shadow:none;zoom:.84}
+  .plan-box,.card,.inforow,.cov,.ben,.panel,.bens .ben{box-shadow:none !important}
+  .sec{break-after:avoid;page-break-after:avoid}
+  .plan-box,.cov,.bens,.two-col,.doc-foot,.inforow,.ben,.panel{break-inside:avoid;page-break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="home-link" href="../Portal-Cotacao-Odonto-PlaneCorp/index.html" title="Voltar ao portal de cotação">
+      <span class="home-back">←</span>
+      <div class="pc-logo" style="--pc:30px">
+        <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+        <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+      </div>
+    </a>
+    <span class="op-badge">Operadora<span id="opLogo"></span></span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Gerador de Propostas · Amil Dental</span>
+    <h1>Monte o plano e gere a <span class="hl">proposta em A4</span> em segundos.</h1>
+    <p>Selecione o tipo de contratação, o plano e o número de vidas. O sistema calcula o investimento e gera um documento de página única pronto para enviar ao cliente.</p>
+    <div class="steps">
+      <span><b>1</b> Tipo de contratação</span>
+      <span><b>2</b> Vidas &amp; plano</span>
+      <span><b>3</b> Dados do cliente</span>
+      <span><b>4</b> Proposta A4</span>
+    </div>
+  </div>
+</section>
+
+<main class="shell">
+  <div class="card" id="config">
+    <section class="step" id="s1">
+      <div class="step-head"><span class="step-num">1</span><h3>Tipo de contratação</h3></div>
+      <div class="choices two">
+        <button class="opt" data-tipo="PF"><span class="ic">👤</span><span><span class="t">Pessoa Física</span><span class="d">Plano individual ou familiar (1+ vidas)</span></span><span class="check">✓</span></button>
+        <button class="opt" data-tipo="PME"><span class="ic">🏢</span><span><span class="t">Empresa / PME</span><span class="d">De 2 a 99 vidas (CNPJ)</span></span><span class="check">✓</span></button>
+      </div>
+    </section>
+
+    <section class="step dim" id="s2">
+      <div class="step-head"><span class="step-num">2</span><h3>O cliente já tem plano médico Amil?</h3><span class="hint">Oferta Cross — preço com desconto</span></div>
+      <div class="choices two">
+        <button class="opt" data-cross="nao"><span class="ic">—</span><span><span class="t">Não</span><span class="d">Tabela padrão de preços</span></span><span class="check">✓</span></button>
+        <button class="opt" data-cross="sim"><span class="ic">%</span><span><span class="t">Sim, é cliente Amil</span><span class="d">Aplica desconto da Oferta Cross</span></span><span class="check">✓</span></button>
+      </div>
+    </section>
+
+    <section class="step dim" id="s3">
+      <div class="step-head"><span class="step-num">3</span><h3>Número de vidas</h3><span class="hint" id="s3hint"></span></div>
+      <div class="field-row">
+        <div class="field"><label>Quantidade de vidas</label>
+          <div class="stepper"><button type="button" id="vminus">–</button><input type="number" id="vidas" value="1" min="1" max="99"><button type="button" id="vplus">+</button></div>
+        </div>
+        <div class="field" id="formaWrap" style="display:none"><label>Plano (carência)</label>
+          <div class="mini-toggle" id="formaToggle"><button type="button" data-forma="mensal" class="on">Mensal · Padrão</button><button type="button" data-forma="anual">Anual · Reduzida</button></div>
+        </div>
+        <div class="field" id="pagWrap" style="display:none"><label>Pagamento</label>
+          <div class="mini-toggle" id="pagToggle"><button type="button" data-pag="cartao" class="on">Cartão</button><button type="button" data-pag="boleto">Boleto</button></div>
+        </div>
+        <div class="field"><label>Faixa / Porte</label><span class="faixa-badge" id="faixaBadge"><span class="dot"></span><span id="faixaTxt">—</span></span></div>
+      </div>
+    </section>
+
+    <section class="step dim" id="s4">
+      <div class="step-head"><span class="step-num">4</span><h3>Escolha o plano</h3><span class="hint" id="s4hint"></span></div>
+      <div class="plans" id="planGrid"></div>
+    </section>
+
+    <section class="step dim" id="s5">
+      <div class="step-head"><span class="step-num">5</span><h3>Dados para a proposta</h3></div>
+      <div class="grid2">
+        <div class="field full"><label id="lblCliente">Nome do cliente</label><input type="text" id="cliente" placeholder="Nome completo"></div>
+        <div class="field" id="cnpjWrap" style="display:none"><label>CNPJ</label><input type="text" id="cnpj" placeholder="00.000.000/0000-00"></div>
+        <div class="field"><label>Cidade</label><input type="text" id="cidade" placeholder="Ex.: Curitiba"></div>
+        <div class="field"><label>UF</label><select id="uf"><option value="">—</option><option>AL</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RS</option><option>SC</option><option>SP</option></select></div>
+        <div class="field"><label>Consultor / Corretor</label><input type="text" id="corretor" placeholder="Seu nome"></div>
+        <div class="field"><label>Telefone do consultor</label><input type="text" id="fone" value="(41) 9990-2288"></div>
+        <div class="field"><label>Data de emissão</label><input type="date" id="data"></div>
+        <div class="field"><label>Válida por</label><select id="validade"><option value="7">7 dias</option><option value="15" selected>15 dias</option><option value="30">30 dias</option></select></div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="summary">
+    <div class="sum-top"><div class="lbl">Resumo da proposta</div><h4 id="sumPlano">Selecione um plano</h4></div>
+    <div class="sum-body">
+      <div class="sum-row"><span class="k">Contratação</span><span class="v" id="sumTipo">—</span></div>
+      <div class="sum-row"><span class="k">Vidas</span><span class="v" id="sumVidas">—</span></div>
+      <div class="sum-row"><span class="k">Tabela</span><span class="v" id="sumTabela">—</span></div>
+      <div class="sum-total">
+        <div class="k" id="sumVidaLbl">Valor por vida</div>
+        <div class="v" id="sumVida">R$ 0,00</div>
+        <div class="sub" id="sumTotal"></div>
+      </div>
+      <button class="btn btn-primary" id="gerar" disabled style="margin-top:16px">📄 Gerar proposta A4</button>
+      <p class="sum-note">Valores de referência Amil Dental (tabela vigente). Proposta não contratual — coberturas e carências conforme contrato.</p>
+    </div>
+  </aside>
+</main>
+
+<footer class="site-foot">
+  <div class="pc-logo white" style="--pc:26px;justify-items:center">
+    <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+    <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+  </div>
+  <div>contato@planecorp.com.br · (41) 9990-2288 · <a href="https://www.planecorp.com.br">www.planecorp.com.br</a></div>
+  <div style="margin-top:6px;font-size:11px;opacity:.7">Corretora autorizada — produtos Amil Dental · Ferramenta de uso interno comercial</div>
+</footer>
+
+<div class="proposal-stage" id="stage">
+  <div class="p-toolbar">
+    <div class="pt-title">📄 Proposta gerada — confira e imprima/salve em PDF</div>
+    <div class="pt-actions">
+      <button class="pt-back" id="voltar">← Voltar e editar</button>
+      <button class="pt-print" id="imprimir">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+  </div>
+  <div class="page"><div class="doc" id="docContent"></div></div>
+</div>
+
+<script>
+const PLANS={
+  bronze:    {tier:'Bronze Doc',  nome:'Amil Dental Bronze Doc',   proc:'+215 procedimentos',
+              desc:'Cuidado essencial da saúde bucal com documentação ortodôntica básica inclusa. Sem coparticipação e com abrangência nacional.',
+              diff:[{t:'Documentação Ortodôntica Básica',d:'Radiografias e documentação inicial para acompanhamento ortodôntico.'}], pf:true, pme:true},
+  prata:     {tier:'Prata Clareia',nome:'Amil Dental Prata Clareia',proc:'+220 procedimentos',
+              desc:'Cobertura essencial mais clareamento estético convencional (gel + moldeira) para um sorriso mais claro. Sem coparticipação e abrangência nacional.',
+              diff:[{t:'Clareamento Estético',d:'Clareamento convencional com gel e moldeiras personalizadas fornecidas pelo plano.'},{t:'Documentação Ortodôntica',d:'Documentação básica para planejamento ortodôntico.'}], pf:true, pme:true},
+  ouro_orto: {tier:'Ouro Orto',   nome:'Amil Dental Ouro Orto',    proc:'+280 procedimentos',
+              desc:'Correção completa da posição dos dentes com documentação, instalação e manutenção de aparelhos inclusas, além de clareamento estético convencional. Sem coparticipação e com abrangência nacional.',
+              diff:[{t:'Ortodontia Completa',d:'Documentação ortodôntica, instalação e todas as manutenções mensais inclusas.'},{t:'Clareamento Estético',d:'Clareamento convencional com gel e moldeiras personalizadas.'},{t:'Radiografia ATM',d:'Investigações completas da articulação temporomandibular.'}], pf:true, pme:true},
+  ouro_prot: {tier:'Ouro Prot',   nome:'Amil Dental Ouro Prot',    proc:'+260 procedimentos',
+              desc:'Reposição e reconstrução de dentes com próteses em resina e cerâmica, placa de bruxismo e clareamento estético convencional. Sem coparticipação e abrangência nacional.',
+              diff:[{t:'Próteses em Resina e Cerâmica',d:'Facetas, coroas, pontes fixas, prótese parcial removível e total (exceto sobre implante).'},{t:'Placa de Bruxismo',d:'Placa miorrelaxante (estése) para disfunções e bruxismo.'},{t:'Clareamento Estético',d:'Clareamento convencional com gel e moldeiras.'}], pf:false, pme:true},
+  platinum:  {tier:'Platinum',    nome:'Amil Dental Platinum',     proc:'+320 procedimentos',
+              desc:'O plano mais completo: ortodontia completa, próteses em resina e cerâmica e clareamento estético, com todas as coberturas essenciais. Sem coparticipação e com abrangência nacional.',
+              diff:[{t:'Ortodontia Completa',d:'Documentação, instalação e todas as manutenções mensais inclusas.'},{t:'Próteses em Resina e Cerâmica',d:'Facetas, coroas, PPR e prótese total (exceto sobre implante).'},{t:'Clareamento Estético',d:'Clareamento convencional com gel e moldeiras.'}], pf:false, pme:true}
+};
+
+const COBERTURA_BASE=[
+  {t:'Urgência e Emergência',d:'Atendimento imediato 24h em todo o Brasil.'},
+  {t:'Consultas e Prevenção',d:'Consultas de rotina, profilaxia (limpeza) e aplicação de flúor.'},
+  {t:'Radiografias',d:'Exames de diagnóstico por imagem (panorâmicas e periapicais).'},
+  {t:'Tratamento de Canal (Endodontia)',d:'Canal completo com especialistas.'},
+  {t:'Tratamento de Gengiva (Periodontia)',d:'Raspagem e tratamento periodontal.'},
+  {t:'Restauração em Resina (Dentística)',d:'Restaurações estéticas em resina.'},
+  {t:'Cirurgias e Extrações',d:'Incluindo remoção cirúrgica de dentes do siso.'},
+  {t:'Próteses Unitárias',d:'Reconstituições e coroas conforme diretriz ANS.'},
+  {t:'Odontopediatria',d:'Atendimento especializado e acolhedor para as crianças.'}
+];
+
+const PRECOS={
+  PF:{
+    padrao:{individual:{mensal:{bronze:56.89,prata:101.46,ouro_orto:149.91},anual:{bronze:49.90,prata:89.00,ouro_orto:131.50}},
+            familiar:{mensal:{bronze:48.35,prata:86.24,ouro_orto:127.42},anual:{bronze:42.42,prata:75.65,ouro_orto:111.77}}},
+    cross:{individual:{mensal:{bronze:52.34,prata:93.34,ouro_orto:137.92},anual:{bronze:45.91,prata:81.88,ouro_orto:120.98}},
+           familiar:{mensal:{bronze:44.48,prata:79.34,ouro_orto:117.23},anual:{bronze:39.02,prata:69.60,ouro_orto:102.83}}}
+  },
+  PME:{
+    padrao:{porteI:{bronze:26.90,prata:40.90,ouro_orto:72.90,ouro_prot:82.90,platinum:103.40},porteII:{bronze:22.06,prata:33.54,ouro_orto:59.78,ouro_prot:67.98,platinum:84.79}},
+    cross:{porteI:{bronze:24.75,prata:37.63,ouro_orto:67.07,ouro_prot:76.27,platinum:95.13},porteII:{bronze:20.30,prata:30.86,ouro_orto:55.00,ouro_prot:62.54,platinum:78.01}}
+  }
+};
+const CODIGOS={
+  PF:{padrao:{bronze:'970680',prata:'970683',ouro_orto:'970686'},cross:{bronze:'970681',prata:'970684',ouro_orto:'970687'}},
+  PME:{padrao:{bronze:'970690',prata:'970694',ouro_orto:'970698',ouro_prot:'970702',platinum:'970706'},cross:{bronze:'970691',prata:'970695',ouro_orto:'970699',ouro_prot:'970703',platinum:'970707'}}
+};
+
+const st={tipo:null,cross:'nao',vidas:1,forma:'mensal',pagamento:'cartao',plano:null};
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const faixaPF=()=>st.vidas<=2?'individual':'familiar';
+const portePME=()=>st.vidas<=29?'porteI':'porteII';
+function precoVida(plano){if(!plano)return null;const tab=st.cross==='sim'?'cross':'padrao';
+  return st.tipo==='PF'?PRECOS.PF[tab][faixaPF()][st.forma][plano]:PRECOS.PME[tab][portePME()][plano];}
+// Total e impacto da forma de pagamento (PF: cartão/boleto × mensal/anual)
+function totalParts(plano){const pv=precoVida(plano),n=st.vidas,vd=n+(n>1?' vidas':' vida');
+  if(st.tipo==='PF'&&st.forma==='anual'){const at=brl(pv*12*n);
+    return st.pagamento==='boleto'?{label:'Boleto anual à vista: ',amount:at,suffix:' · '+vd}:{label:'Cartão 12x sem juros · total anual ',amount:at,suffix:''};}
+  return {label:'Total mensal: ',amount:brl(pv*n),suffix:' · '+vd};}
+function pagTagTxt(){if(st.tipo==='PME')return 'Mensal por vida';
+  if(st.forma==='anual')return st.pagamento==='boleto'?'Anual · Boleto à vista':'Anual · Cartão 12x s/ juros';
+  return st.pagamento==='boleto'?'Mensal · Boleto':'Mensal · Cartão recorrente';}
+const AMIL_SRC='data:image/png;base64,@@AMIL_B64@@';
+function amilLogo(h){return `<span class="amil-wrap" style="--ah:${h}px"><img class="amil-img" src="${AMIL_SRC}" alt="amil dental" onerror="this.remove()"><span class="amil amil-fb"><span class="a-word">amil</span><span class="a-sub">dental</span></span></span>`;}
+
+$$('[data-tipo]').forEach(b=>b.onclick=()=>{
+  st.tipo=b.dataset.tipo; $$('[data-tipo]').forEach(x=>x.classList.toggle('sel',x===b)); st.plano=null;
+  const inp=$('#vidas'); if(st.tipo==='PME'){inp.min=2; if(st.vidas<2){st.vidas=2;inp.value=2;}} else inp.min=1;
+  $('#formaWrap').style.display=st.tipo==='PF'?'flex':'none';
+  $('#pagWrap').style.display=st.tipo==='PF'?'flex':'none';
+  $('#cnpjWrap').style.display=st.tipo==='PME'?'flex':'none';
+  $('#lblCliente').textContent=st.tipo==='PME'?'Razão social / Nome fantasia':'Nome do cliente';
+  $('#s2').classList.remove('dim'); $('#s3').classList.remove('dim'); refreshAll();
+});
+$$('[data-cross]').forEach(b=>b.onclick=()=>{st.cross=b.dataset.cross;$$('[data-cross]').forEach(x=>x.classList.toggle('sel',x===b));refreshAll();});
+function setVidas(v){const min=st.tipo==='PME'?2:1;v=Math.max(min,Math.min(99,v||min));st.vidas=v;$('#vidas').value=v;refreshAll();}
+$('#vplus').onclick=()=>setVidas(st.vidas+1);
+$('#vminus').onclick=()=>setVidas(st.vidas-1);
+$('#vidas').oninput=e=>{const n=parseInt(e.target.value,10);if(!isNaN(n))setVidas(n);};
+$('#vidas').onblur=e=>setVidas(parseInt(e.target.value,10));
+$$('#formaToggle button').forEach(b=>b.onclick=()=>{st.forma=b.dataset.forma;$$('#formaToggle button').forEach(x=>x.classList.toggle('on',x===b));refreshAll();});
+$$('#pagToggle button').forEach(b=>b.onclick=()=>{st.pagamento=b.dataset.pag;$$('#pagToggle button').forEach(x=>x.classList.toggle('on',x===b));refreshAll();});
+
+function buildPlans(){
+  const grid=$('#planGrid'); grid.innerHTML=''; if(!st.tipo)return;
+  Object.keys(PLANS).forEach(key=>{
+    const p=PLANS[key]; if(st.tipo==='PF'&&!p.pf)return;
+    const pv=precoVida(key), tot=pv*st.vidas;
+    const card=document.createElement('button');
+    card.className='plan'+(st.plano===key?' sel':'');
+    card.innerHTML=`<span class="pick"></span><div class="tier">${p.tier}</div><div class="pname">${p.nome.replace('Amil Dental ','')}</div><div class="proc">${p.proc}</div><div class="resumo">${p.desc.split('.')[0]}.</div>
+      <div class="priceline"><div class="pvida">por vida${st.tipo==='PF'&&st.forma==='anual'?' · anual':''}</div><div class="pval">${brl(pv)}<small>/mês</small></div><div class="ptot">Total: ${brl(tot)}/mês</div></div>`;
+    card.onclick=()=>{st.plano=key;buildPlans();$('#s5').classList.remove('dim');refreshSummary();};
+    grid.appendChild(card);
+  });
+}
+function refreshAll(){
+  if(st.tipo){
+    $('#s3hint').textContent=st.tipo==='PME'?'De 2 a 99 vidas':'1 ou mais vidas';
+    $('#s4').classList.remove('dim');
+    if(st.tipo==='PF'){$('#faixaTxt').textContent=faixaPF()==='individual'?'Individual (1–2 vidas)':'Familiar (3+ vidas)';$('#s4hint').textContent='3 planos disponíveis para PF';}
+    else{$('#faixaTxt').textContent=portePME()==='porteI'?'Porte I (2–29 vidas)':'Porte II (30–99) · sem carência';$('#s4hint').textContent='5 planos disponíveis para PME';}
+  }
+  if(st.plano&&st.tipo==='PF'&&!PLANS[st.plano].pf)st.plano=null;
+  buildPlans(); refreshSummary();
+}
+function refreshSummary(){
+  $('#sumTipo').textContent=st.tipo?(st.tipo==='PF'?'Pessoa Física':'Empresa / PME'):'—';
+  $('#sumVidas').textContent=st.tipo?st.vidas+(st.vidas>1?' vidas':' vida'):'—';
+  let tabela='—';
+  if(st.tipo==='PF')tabela=(faixaPF()==='individual'?'Individual':'Familiar')+(st.cross==='sim'?' · Cross':'')+' · '+(st.forma==='anual'?'Anual':'Mensal')+' · '+(st.pagamento==='boleto'?'Boleto':'Cartão');
+  else if(st.tipo==='PME')tabela=(portePME()==='porteI'?'Porte I':'Porte II')+(st.cross==='sim'?' · Cross':'');
+  $('#sumTabela').textContent=tabela;
+  if(st.plano){
+    const p=PLANS[st.plano],pv=precoVida(st.plano),tot=pv*st.vidas;
+    $('#sumPlano').textContent=p.nome.replace('Amil Dental ','Dental ');
+    $('#sumVidaLbl').textContent='Valor por vida'+(st.tipo==='PF'&&st.forma==='anual'?' (anual)':'');
+    $('#sumVida').innerHTML=brl(pv)+'<small>/mês</small>';
+    const t=totalParts(st.plano);$('#sumTotal').textContent=t.label+t.amount+t.suffix;
+    $('#gerar').disabled=false;
+  }else{
+    $('#sumPlano').textContent='Selecione um plano';$('#sumVida').innerHTML='R$ 0,00';$('#sumTotal').textContent='';$('#sumVidaLbl').textContent='Valor por vida';$('#gerar').disabled=true;
+  }
+}
+
+function carenciaCtx(){if(st.tipo==='PME')return portePME()==='porteII'?'pme2':'pme1';return st.forma==='anual'?'pfanual':'pfmensal';}
+function carenciaInfo(){return {pme2:{badge:'Sem carência',ok:true},pme1:{badge:'Porte I',ok:false},pfanual:{badge:'Carência reduzida (anual)',ok:false},pfmensal:{badge:'Carência padrão (mensal)',ok:false}}[carenciaCtx()];}
+function carenciaRows(){
+  const labels=['Urgência e Emergência','Consultas, Prevenção, Diagnóstico e Raio-X','Tratamento de Canal, Gengiva e Restaurações','Próteses, Ortodontia e Procedimentos Estéticos'];
+  const vals={pme2:['Sem carência','Sem carência','Sem carência','Sem carência'],pme1:['24 horas','24 horas','24 horas','180 dias'],pfanual:['24 horas','24 horas','24 horas','90 dias'],pfmensal:['24 horas','60 dias','90 dias','180 dias']}[carenciaCtx()];
+  return labels.map((l,i)=>({cob:l,prazo:vals[i],ok:vals[i]==='Sem carência'}));
+}
+
+function fmtData(iso){if(!iso)return '—';const[a,m,d]=iso.split('-');return `${d}/${m}/${a}`;}
+function addDias(iso,dias){const dt=new Date(iso+'T00:00:00');dt.setDate(dt.getDate()+parseInt(dias,10));return dt.toISOString().slice(0,10);}
+
+$('#gerar').onclick=()=>{
+  const p=PLANS[st.plano], pv=precoVida(st.plano), tot=pv*st.vidas;
+  const tab=st.cross==='sim'?'cross':'padrao';
+  const codigo=CODIGOS[st.tipo][tab][st.plano];
+  const c=carenciaInfo();
+  const rowsHtml=carenciaRows().map(r=>`<tr><td>${r.cob}</td><td class="${r.ok?'ok':''}">${r.prazo}</td></tr>`).join('');
+  const dataIso=$('#data').value||new Date().toISOString().slice(0,10);
+  const validaAte=addDias(dataIso,$('#validade').value);
+  const cliente=$('#cliente').value.trim()||(st.tipo==='PME'?'Empresa cliente':'Cliente');
+  const cnpj=$('#cnpj').value.trim();
+  const cidade=$('#cidade').value.trim(), uf=$('#uf').value;
+  const local=(cidade||uf)?`${cidade}${cidade&&uf?' / ':''}${uf}`:'';
+  const corretor=$('#corretor').value.trim()||'Consultor PlaneCorp';
+  const fone=$('#fone').value.trim();
+
+  const isAnual=st.tipo==='PF'&&st.forma==='anual';
+  const tituloTipo = st.tipo==='PME' ? 'EMPRESARIAL' : (faixaPF()==='individual'?'INDIVIDUAL':'FAMILIAR');
+  const faixaLabel = st.tipo==='PF'
+    ? (faixaPF()==='individual'?'Individual':'Familiar')
+    : (portePME()==='porteI'?'PME Porte I':'PME Porte II');
+  const metaLine = `Código do Plano: ${codigo} · ${st.vidas} ${st.vidas>1?'vidas':'vida'} · ${faixaLabel}`;
+
+  const tp = totalParts(st.plano);
+  const totalLine = tp.label+`<b>${tp.amount}</b>`+tp.suffix;
+  const pagTag = pagTagTxt();
+
+  const baseLis=COBERTURA_BASE.map(x=>`<li><b>${x.t}:</b> ${x.d}</li>`).join('');
+  const diffLis=p.diff.map(x=>`<li><b>${x.t}:</b> ${x.d}</li>`).join('');
+  const carPlano = st.tipo==='PME' ? (portePME()==='porteII'?'sem carência':'Porte I') : (isAnual?'reduzida · anual':'padrão · mensal');
+  const vigencia=st.tipo==='PF'?'12 meses':'24 meses';
+  const pgto=st.tipo==='PF'?'Mensal (carência padrão): cartão recorrente — sem comprometer o limite — ou boleto. Anual (carência reduzida): cartão em 12x sem juros ou boleto à vista. Cartões: Visa, Mastercard, Elo, Hiper e Amex.':'Boleto bancário mensal ou cartão de crédito.';
+
+  $('#docContent').innerHTML=`
+    <div class="doc-head">
+      <div class="pc-logo" style="--pc:30px">
+        <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+        <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+      </div>
+      <div class="dh-op"><div class="lbl">Operadora</div>${amilLogo(42)}</div>
+    </div>
+    <div class="title-bar"><span class="tb-tag">Proposta</span><h1>PROPOSTA ODONTOLÓGICA ${tituloTipo}</h1></div>
+
+    <div class="inforow">
+      <div class="ic"><div class="k">${st.tipo==='PME'?'Empresa':'Cliente'}</div><div class="v">${cliente}${(st.tipo==='PME'&&cnpj)?`<small>CNPJ ${cnpj}</small>`:(local?`<small>${local}</small>`:'')}</div></div>
+      <div class="ic"><div class="k">Data de emissão</div><div class="v">${fmtData(dataIso)}</div></div>
+      <div class="ic"><div class="k">Proposta válida até</div><div class="v">${fmtData(validaAte)}</div></div>
+    </div>
+
+    <div class="sec"><span class="bar"></span><h2>Plano Selecionado</h2><span class="num">${metaLine}</span></div>
+    <div class="plan-box">
+      <div class="pb-left">
+        <div class="pb-meta">${p.tier} · ${p.proc}</div>
+        <div class="pb-name">${p.nome}</div>
+        <div class="pb-desc">${p.desc}</div>
+        <div class="pb-tags"><span class="tag">Abrangência nacional</span><span class="tag">Sem coparticipação</span><span class="tag blue">Código ${codigo}</span></div>
+      </div>
+      <div class="valor">
+        <div class="vb-l">Valor por vida${isAnual?' (anual)':''}</div>
+        <div class="vb-big">${brl(pv)}<small>/mês</small></div>
+        <div class="vb-total">${totalLine}</div>
+        <span class="vb-tag">${pagTag}</span>
+      </div>
+    </div>
+
+    <div class="sec"><span class="bar"></span><h2>Coberturas</h2></div>
+    <div class="cov">
+      <div class="cc"><h3><span class="pill">Rol ANS</span> Cobertura Essencial</h3><ul>${baseLis}</ul></div>
+      <div class="cc diff"><h3><span class="pill">Exclusivo</span> Diferenciais ${p.tier}</h3><ul>${diffLis}</ul></div>
+    </div>
+
+    <div class="sec"><span class="bar"></span><h2>Benefícios Adicionais</h2></div>
+    <div class="bens">
+      <div class="ben"><span class="bi">℞</span><div><div class="bt">Desconto em Farmácias</div><div class="bd">Redes RD, Pague Menos, Extrafarma e Venancio.</div></div></div>
+      <div class="ben"><span class="bi">★</span><div><div class="bt">Condição Invisalign</div><div class="bd">Descontos exclusivos em ortodontia invisível (não contratual).</div></div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="ph"><span class="ci">⏱</span><h3>Carências (${carPlano})</h3><span class="badge${c.ok?' ok':''}">${c.badge}</span></div>
+        <div class="pbd"><table class="car-table"><tbody>${rowsHtml}</tbody></table></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="ci">📋</span><h3>Condições Gerais</h3></div>
+        <div class="pbd"><ul class="cond">
+          <li><b>Vigência mínima:</b> compromisso de ${vigencia} com renovação automática.</li>
+          <li><b>Pagamento:</b> ${pgto}</li>
+          <li><b>Contratação rápida:</b> processo digital, documentos solicitados só em caso de divergência.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="doc-foot">
+      <div class="consultor">
+        <div class="cl">Consultor PlaneCorp</div>
+        <div class="cn">${corretor}</div>
+        <div class="cd">Atendimento exclusivo<br><b>${fone}</b><br>contato@planecorp.com.br<br><b>www.planecorp.com.br</b></div>
+      </div>
+      <div class="legal">
+        <h4>Informações legais importantes</h4>
+        <p>Valores de referência da tabela oficial Amil Dental vigente, válidos por tempo limitado e sujeitos a alterações. Esta proposta comercial não tem caráter contratual; coberturas e carências seguem estritamente o Contrato de Cobertura e o Rol ANS vigente (Lei nº 9.656/98). Planos disponíveis para AL, AM, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PR, RJ, RN, RO, RS, SC e SP (sujeito à análise de CEP). Amil Assistência Médica Internacional S/A — CNPJ 29.309.127/0001-79 · Amil Dental CRO SP 4.772 / CRO RJ 960 · PlaneCorp — corretora autorizada.</p>
+      </div>
+    </div>
+    <div class="doc-strip"><span>PlaneCorp · Soluções em Benefícios e Seguros</span><span>Proposta Comercial Amil Dental · Página Única</span></div>`;
+
+  document.body.classList.add('show-proposal');
+  $('#stage').scrollTop=0;
+};
+$('#voltar').onclick=()=>document.body.classList.remove('show-proposal');
+$('#imprimir').onclick=()=>window.print();
+$('#data').value=new Date().toISOString().slice(0,10);
+(function(){var ol=document.getElementById('opLogo');if(ol)ol.innerHTML=amilLogo(26);})();
+refreshSummary();
+</script>
+</body>
+</html>

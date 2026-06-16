@@ -1,0 +1,51 @@
+GERADOR DE PROPOSTAS — AMIL DENTAL · PlaneCorp
+================================================
+
+COMO USAR
+---------
+Basta abrir o arquivo  index.html  no navegador (clique duplo).
+Não precisa de internet nem instalar nada — as fontes da marca já estão
+embutidas no arquivo.
+
+Fluxo:
+ 1. Escolha o tipo (Pessoa Física ou Empresa/PME)
+ 2. Informe se o cliente já tem plano médico Amil (Oferta Cross = desconto)
+ 3. Número de vidas (define a faixa/porte automaticamente)
+    - PF: 1-2 vidas = Individual · 3+ = Familiar · + forma de pagamento (Mensal/Anual)
+    - PME: 2-29 = Porte I · 30-99 = Porte II (sem carência)
+ 4. Escolha o plano (cards já mostram o valor por vida e o total)
+ 5. Preencha os dados do cliente e clique em "Gerar proposta A4"
+ 6. Na proposta, clique em "Imprimir / Salvar PDF" (a proposta foi
+    desenhada para caber em 1 folha A4).
+
+ATUALIZAR PREÇOS / TEXTOS
+-------------------------
+Os valores e conteúdos editáveis ficam no arquivo  _fonte/_template.html
+(procure pelos objetos PRECOS, PLANS, CODIGOS e COBERTURA_BASE no <script>).
+Depois de editar, gere de novo o index.html rodando, no Git Bash:
+
+    bash _fonte/build.sh
+
+Esse passo só re-embute as fontes da marca PlaneCorp no index.html final.
+
+PRÉ-VISUALIZAR COM SERVIDOR (opcional)
+--------------------------------------
+serve.ps1 sobe um servidor local em http://localhost:8753 (usado no preview).
+
+ARQUIVOS
+--------
+ index.html            -> O GERADOR (use/abra este)
+ serve.ps1             -> servidor local opcional
+ LEIA-ME.txt           -> este arquivo
+ _fonte/_template.html -> fonte editável (preços/textos) — gera o index.html
+ _fonte/build.sh       -> re-embute as fontes e regenera o index.html
+
+OBSERVAÇÕES
+-----------
+- Valores conforme a Tabela Amil Dental (impressão 15/06/2026). A proposta
+  é de referência comercial, não-contratual; coberturas e carências seguem
+  o contrato vigente.
+- Abra sempre o index.html (NÃO o _fonte/_template.html — esse é só a fonte
+  de edição e o logo da PlaneCorp não renderiza nele).
+- O logo "amil dental" foi recriado tipograficamente (gradiente azul->roxo).
+  Se quiser o arquivo oficial em PNG/SVG, salve-o na pasta e eu troco.

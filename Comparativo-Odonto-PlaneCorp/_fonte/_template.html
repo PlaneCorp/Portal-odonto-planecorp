@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>if(localStorage.getItem('pc_auth')!=='ok')location.replace('../Portal-Cotacao-Odonto-PlaneCorp/index.html');</script>
+<title>Comparador de Planos Odontológicos — PlaneCorp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@font-face{font-family:'AldoPlaneCorp';src:url('data:font/ttf;base64,@@ALDOPC_B64@@') format('truetype');font-display:block;}
+@font-face{font-family:'Aldo';src:url('data:font/ttf;base64,@@ALDO_B64@@') format('truetype');font-display:block;}
+
+:root{
+  --cyan:#00a4c5; --cyan-d:#0089a8; --cyan-l:#e6f6fa; --cyan-bd:#b5e6ef;
+  --navy:#002e6e; --navy-d:#00224f; --navy-2:#0a3d82;
+  --ink:#1e293b; --slate:#475569; --muted:#64748b; --muted-2:#94a3b8;
+  --line:#e2e8f0; --line-2:#eef2f6; --bg:#f1f5f9; --bg-2:#f8fafc; --card:#fff;
+  --blue-l:#eff6ff; --blue-bd:#bfdbfe; --orange:#ff6b35; --ok:#0e9f6e;
+  --radius:16px; --radius-sm:11px;
+  --shadow:0 14px 38px -18px rgba(2,46,110,.28); --shadow-sm:0 6px 16px -10px rgba(2,46,110,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Inter',sans-serif;font-weight:800;line-height:1.15;color:var(--navy);letter-spacing:-.01em}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select{font-family:inherit;font-size:15px}
+a{color:var(--cyan-d);text-decoration:none}
+
+.pc-logo{display:inline-grid;grid-template-columns:min-content;line-height:.9;user-select:none}
+.pc-logo .pc-name{font-family:'AldoPlaneCorp','Montserrat',sans-serif;font-size:var(--pc,30px);line-height:.9;white-space:nowrap}
+.pc-logo .pc-gap{font-size:calc(var(--pc,30px) * .2326)}
+.pc-logo .pc-tag{font-family:'Aldo','Montserrat',sans-serif;font-size:calc(var(--pc,30px) * .2558);line-height:.9;letter-spacing:.04em;text-align:justify;text-align-last:justify;margin-top:2px}
+.pc-logo .p{color:#4ab8aa}.pc-logo .lane{color:#4ab8aa}.pc-logo .corp{color:#303d50}.pc-logo .pc-tag{color:#5a6a7a}
+.pc-logo.white .p,.pc-logo.white .lane,.pc-logo.white .corp,.pc-logo.white .pc-tag{color:#fff}
+
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{max-width:1180px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.home-link{display:flex;align-items:center;gap:12px;text-decoration:none;transition:.15s}
+.home-back{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--bg-2);border:1px solid var(--line);color:var(--navy);font-size:19px;font-weight:800;flex:none;transition:.15s}
+.home-link:hover .home-back{background:var(--cyan-l);border-color:var(--cyan);color:var(--cyan-d)}
+.home-link:hover .pc-logo{opacity:.85}
+.top-tag{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--bg-2);border:1px solid var(--line);padding:7px 13px;border-radius:999px}
+
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 70%,#001a3d 100%);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-160px;top:-120px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(0,164,197,.55),rgba(0,164,197,0) 62%)}
+.hero .wrap{max-width:1180px;margin:0 auto;padding:40px 22px 36px;position:relative;z-index:1}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);background:rgba(0,164,197,.13);border:1px solid rgba(0,164,197,.34);padding:6px 13px;border-radius:999px}
+.hero h1{color:#fff;font-size:clamp(26px,4.2vw,42px);margin:16px 0 12px;max-width:20ch;font-weight:800}
+.hero h1 .hl{color:var(--cyan)}
+.hero p{color:#c2d2e6;font-size:16px;max-width:62ch}
+
+.shell{max-width:1180px;margin:0 auto;padding:28px 22px 70px;display:grid;grid-template-columns:1fr 340px;gap:26px;align-items:start}
+@media(max-width:920px){.shell{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.step{padding:22px 24px;border-bottom:1px solid var(--line-2)}
+.step:last-child{border-bottom:none}
+.step.dim{opacity:.45;pointer-events:none;filter:saturate(.4)}
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.step-num{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--cyan-l);color:var(--cyan-d);font-weight:800;font-size:15px}
+.step-head h3{font-size:18px;font-weight:800}
+.step-head .hint{font-size:13px;color:var(--muted);font-weight:500;margin-left:auto}
+
+.choices{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:520px){.choices{grid-template-columns:1fr}}
+.opt{position:relative;display:flex;gap:13px;align-items:flex-start;padding:15px 16px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:#fff;text-align:left;transition:.16s}
+.opt:hover{border-color:var(--cyan);background:var(--cyan-l)}
+.opt.sel{border-color:var(--cyan);background:var(--cyan-l);box-shadow:0 0 0 3px rgba(0,164,197,.16)}
+.opt .ic{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:19px}
+.opt.sel .ic{background:var(--cyan)}
+.opt .t{display:block;font-weight:700;font-size:15.5px;color:var(--navy)}
+.opt .d{display:block;font-size:12.8px;color:var(--muted);margin-top:2px}
+.opt .check{position:absolute;top:10px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:#fff;font-size:12px}
+.opt.sel .check{background:var(--cyan);border-color:var(--cyan)}
+
+.field-row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.grow{flex:1;min-width:220px}
+.field label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);transition:.15s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,164,197,.15)}
+.stepper{display:flex;align-items:stretch;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;width:148px}
+.stepper button{width:42px;background:var(--bg);color:var(--navy);font-size:21px;font-weight:700}
+.stepper button:hover{background:var(--cyan-l);color:var(--cyan-d)}
+.stepper input{width:64px;border:none;text-align:center;font-size:18px;font-weight:800;color:var(--navy)}
+.stepper input:focus{outline:none}
+
+.opsel{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:720px){.opsel{grid-template-columns:1fr}}
+.osel{border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:14px;background:#fff;display:flex;flex-direction:column;gap:10px;transition:.16s}
+.osel.has{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,164,197,.12)}
+.osel .oh{height:40px;display:flex;align-items:center;justify-content:center}
+.osel .oh img{max-height:34px;max-width:140px;width:auto}
+.osel select{width:100%}
+.osel .opx{text-align:center;font-size:12px;color:var(--muted);font-weight:600;min-height:18px}
+.osel .opx b{color:var(--navy);font-size:16px;font-weight:800}
+
+.summary{position:sticky;top:84px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.summary .sum-top{background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;padding:18px 20px}
+.summary .sum-top .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.summary .sum-top h4{color:#fff;font-size:19px;margin-top:3px;font-weight:800}
+.summary .sum-body{padding:18px 20px}
+.sum-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--line-2)}
+.sum-row .k{color:var(--muted)}.sum-row .v{font-weight:700;color:var(--navy);text-align:right}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:15px;border-radius:12px;font-weight:800;font-size:15.5px;transition:.15s;margin-top:14px}
+.btn-primary{background:var(--cyan);color:#fff;box-shadow:0 10px 22px -10px rgba(0,164,197,.85)}
+.btn-primary:hover{background:var(--cyan-d)}
+.btn-primary:disabled{background:#c2cdd6;color:#fff;box-shadow:none;cursor:not-allowed}
+.sum-note{font-size:11px;color:var(--muted-2);text-align:center;margin-top:12px;line-height:1.4}
+
+.proposal-stage{display:none;position:fixed;inset:0;z-index:80;background:#475569;overflow:auto;padding:26px 0 70px}
+body.show-proposal .proposal-stage{display:block}
+body.show-proposal{overflow:hidden}
+.p-toolbar{position:fixed;top:0;left:0;right:0;z-index:90;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.p-toolbar .pt-title{font-size:14px;font-weight:600;color:#cfd9e8}
+.p-toolbar .pt-actions{display:flex;gap:10px}
+.p-toolbar button{padding:10px 18px;border-radius:9px;font-weight:700;font-size:14px}
+.pt-print{background:var(--cyan);color:#fff}.pt-print:hover{background:var(--cyan-d)}
+.pt-back{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}.pt-back:hover{background:rgba(255,255,255,.1)}
+
+.page{width:210mm;min-height:296mm;margin:64px auto 0;background:#fff;box-shadow:0 18px 50px rgba(0,0,0,.35);position:relative;color:var(--slate)}
+.doc{padding:10mm 13mm 8mm}
+.doc-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:9px;border-bottom:3px solid var(--cyan)}
+.doc-head .dh-r{text-align:right;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);font-weight:800}
+.title-bar{display:flex;align-items:center;gap:10px;margin-top:10px}
+.title-bar .tb-tag{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--cyan);padding:4px 10px;border-radius:5px}
+.title-bar h1{font-size:18px;font-weight:800;color:var(--navy)}
+.inforow{display:grid;grid-template-columns:2fr 1fr 1fr;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:10px}
+.inforow .ic{padding:8px 13px;border-right:1px solid var(--line-2)}
+.inforow .ic:last-child{border-right:none}
+.inforow .k{font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted-2);font-weight:800}
+.inforow .v{font-size:12.5px;font-weight:700;color:var(--navy);margin-top:2px}
+
+.cmp{display:grid;gap:11px;margin-top:6mm;grid-template-columns:repeat(var(--cols,3),1fr)}
+.cmp-col{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;background:#fff}
+.cmp-col.best{border-color:var(--ok);box-shadow:0 0 0 2px rgba(14,159,110,.18)}
+.cmp-h{padding:11px 10px 9px;border-bottom:1px solid var(--line);background:var(--bg-2);text-align:center}
+.cmp-h .oimg{height:30px;display:flex;align-items:center;justify-content:center;margin-bottom:7px}
+.cmp-h .oimg img{max-height:30px;max-width:120px;width:auto}
+.cmp-h .pl{font-size:14px;font-weight:800;color:var(--navy);line-height:1.1}
+.cmp-h .pr{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-top:2px}
+.cmp-price{text-align:center;padding:9px 8px;background:linear-gradient(150deg,var(--navy),var(--navy-d));color:#fff}
+.cmp-price .pv{font-size:23px;font-weight:800;line-height:1}.cmp-price .pv small{font-size:11px;font-weight:600;opacity:.85}
+.cmp-price .tot{font-size:10px;color:#bcd9e8;margin-top:3px;font-weight:600}
+.cmp-best-tag{display:block;background:var(--ok);color:#fff;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:3px;text-align:center}
+.cmp-b{padding:10px 11px;display:flex;flex-direction:column;gap:8px;flex:1}
+.cmp-attr{font-size:10.5px;color:var(--slate)}
+.cmp-attr .lab{font-size:8px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-2);font-weight:800;display:block;margin-bottom:1px}
+.cmp-attr.car .val{font-weight:700;color:var(--navy)}
+.cmp-diff{list-style:none;display:grid;gap:3px;margin-top:1px}
+.cmp-diff li{font-size:10px;color:var(--slate);padding-left:13px;position:relative;line-height:1.25}
+.cmp-diff li::before{content:"✓";position:absolute;left:0;top:0;color:var(--cyan);font-weight:800}
+
+.cmp-note{margin-top:6mm;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:10px;color:var(--slate);line-height:1.45}
+.cmp-note b{color:var(--navy)}
+
+.doc-foot{display:grid;grid-template-columns:230px 1fr;gap:16px;margin-top:6mm;border-top:1px solid var(--line);padding-top:9px}
+.consultor .cl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan-d);margin-bottom:4px}
+.consultor .cn{font-size:13px;font-weight:800;color:var(--navy)}
+.consultor .cd{font-size:10.5px;color:var(--muted);line-height:1.55;margin-top:2px}.consultor .cd b{color:var(--navy)}
+.legal h4{font-size:9.5px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.legal p{font-size:8.4px;color:var(--muted-2);line-height:1.42;text-align:justify}
+.doc-strip{display:flex;justify-content:space-between;align-items:center;margin-top:7px;padding-top:7px;border-top:1px solid var(--line-2);font-size:8.5px;color:var(--muted-2);font-weight:600}
+
+.site-foot{background:var(--navy);color:#9fb3cc;text-align:center;padding:26px 22px;font-size:12.5px}
+.site-foot .pc-logo{margin-bottom:10px}.site-foot a{color:var(--cyan)}
+
+@media print{
+  @page{size:A4;margin:0}
+  body{background:#fff}
+  body.show-proposal .topbar,body.show-proposal .hero,body.show-proposal .shell,body.show-proposal .site-foot,.p-toolbar{display:none !important}
+  .proposal-stage{position:static;display:block;background:#fff;padding:0;overflow:visible}
+  .page{width:233.3mm;min-height:auto;margin:0 auto;box-shadow:none;zoom:.84}
+  .cmp-col,.card,.inforow,.cmp-note{box-shadow:none !important}
+  .cmp,.doc-foot,.inforow,.cmp-col{break-inside:avoid;page-break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="home-link" href="../Portal-Cotacao-Odonto-PlaneCorp/index.html" title="Voltar ao portal de cotação">
+      <span class="home-back">←</span>
+      <div class="pc-logo" style="--pc:30px">
+        <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+        <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+      </div>
+    </a>
+    <span class="top-tag">Comparador de Planos</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">PlaneCorp · Comparativo Odontológico</span>
+    <h1>Compare os planos das <span class="hl">3 operadoras</span> lado a lado</h1>
+    <p>Escolha PF ou empresa, informe as vidas e selecione um plano de cada operadora (Amil, OdontoPrev e Dental Uni). O sistema gera um comparativo A4 pronto para o cliente.</p>
+  </div>
+</section>
+
+<main class="shell">
+  <div class="card" id="config">
+    <section class="step" id="s1">
+      <div class="step-head"><span class="step-num">1</span><h3>Tipo de contratação</h3></div>
+      <div class="choices">
+        <button class="opt" data-tipo="PF"><span class="ic">👤</span><span><span class="t">Pessoa Física</span><span class="d">Individual ou familiar</span></span><span class="check">✓</span></button>
+        <button class="opt" data-tipo="PJ"><span class="ic">🏢</span><span><span class="t">Pessoa Jurídica / Empresa</span><span class="d">Planos empresariais (PME)</span></span><span class="check">✓</span></button>
+      </div>
+    </section>
+
+    <section class="step dim" id="s2">
+      <div class="step-head"><span class="step-num">2</span><h3>Dados e número de vidas</h3></div>
+      <div class="field-row">
+        <div class="field grow"><label id="lblNome">Nome do cliente</label><input type="text" id="nome" placeholder="Nome completo"></div>
+        <div class="field"><label>Vidas</label>
+          <div class="stepper"><button type="button" id="vminus">–</button><input type="number" id="vidas" value="1" min="1" max="99"><button type="button" id="vplus">+</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step dim" id="s3">
+      <div class="step-head"><span class="step-num">3</span><h3>Selecione um plano de cada operadora</h3><span class="hint">mínimo 2 para comparar</span></div>
+      <div class="opsel" id="opSel"></div>
+    </section>
+  </div>
+
+  <aside class="summary">
+    <div class="sum-top"><div class="lbl">Comparativo</div><h4 id="sumTitle">Planos odontológicos</h4></div>
+    <div class="sum-body">
+      <div class="sum-row"><span class="k">Tipo</span><span class="v" id="sumTipo">—</span></div>
+      <div class="sum-row"><span class="k">Vidas</span><span class="v" id="sumVidas">—</span></div>
+      <div class="sum-row"><span class="k">Operadoras</span><span class="v" id="sumOps">0 selecionadas</span></div>
+      <button class="btn btn-primary" id="gerar" disabled>📊 Gerar comparativo A4</button>
+      <p class="sum-note">Valores de referência das tabelas vigentes de cada operadora. Base de comparação: mensal por vida.</p>
+    </div>
+  </aside>
+</main>
+
+<footer class="site-foot">
+  <div class="pc-logo white" style="--pc:26px;justify-items:center">
+    <div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div>
+    <div class="pc-tag">Soluções em Benefícios e Seguros</div>
+  </div>
+  <div>contato@planecorp.com.br · (41) 9990-2288 · <a href="https://www.planecorp.com.br">www.planecorp.com.br</a></div>
+  <div style="margin-top:6px;font-size:11px;opacity:.7">Corretora autorizada · Comparador de uso interno comercial</div>
+</footer>
+
+<div class="proposal-stage" id="stage">
+  <div class="p-toolbar">
+    <div class="pt-title">📊 Comparativo gerado — confira e imprima/salve em PDF</div>
+    <div class="pt-actions">
+      <button class="pt-back" id="voltar">← Voltar e editar</button>
+      <button class="pt-print" id="imprimir">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+  </div>
+  <div class="page"><div class="doc" id="docContent"></div></div>
+</div>
+
+<script>
+const LOGOS={amil:'data:image/png;base64,@@AMIL_B64@@',odontoprev:'data:image/jpeg;base64,@@ODONTO_B64@@',dentaluni:'data:image/png;base64,@@DENTALUNI_B64@@'};
+const OPS={
+  amil:{label:'Amil Dental', base:'Mensal · tabela padrão',
+    PF:[
+      {k:'bronze',nome:'Bronze Doc',proc:'+215 proc.',ind:56.89,fam:48.35,diff:['Documentação ortodôntica básica']},
+      {k:'prata',nome:'Prata Clareia',proc:'+220 proc.',ind:101.46,fam:86.24,diff:['Clareamento convencional','Doc. ortodôntica']},
+      {k:'ouro_orto',nome:'Ouro Orto',proc:'+280 proc.',ind:149.91,fam:127.42,diff:['Ortodontia completa','Clareamento']}
+    ],
+    PJ:[
+      {k:'bronze',nome:'Bronze Doc',proc:'+215 proc.',I:26.90,II:22.06,diff:['Documentação ortodôntica básica']},
+      {k:'prata',nome:'Prata Clareia',proc:'+220 proc.',I:40.90,II:33.54,diff:['Clareamento convencional']},
+      {k:'ouro_orto',nome:'Ouro Orto',proc:'+280 proc.',I:72.90,II:59.78,diff:['Ortodontia completa','Clareamento']},
+      {k:'ouro_prot',nome:'Ouro Prot',proc:'+260 proc.',I:82.90,II:67.98,diff:['Próteses resina/cerâmica','Clareamento']},
+      {k:'platinum',nome:'Platinum',proc:'+320 proc.',I:103.40,II:84.79,diff:['Ortodontia + Próteses','Clareamento']}
+    ]},
+  odontoprev:{label:'OdontoPrev', base:'Mensal',
+    PF:[
+      {k:'junior',nome:'Dental Junior',proc:'185 eventos',m:31.90,diff:['Foco infantil/juvenil','Mantenedores']},
+      {k:'bem_estar',nome:'Bem Estar',proc:'Cobertura ampla',m:48.90,diff:['Clareamento em gel']},
+      {k:'white',nome:'Bem Estar White',proc:'202 eventos',m:96.49,diff:['Clareamento','Placa de bruxismo']},
+      {k:'pro',nome:'Bem Estar Pró',proc:'208 eventos',m:106.20,diff:['Próteses removíveis']},
+      {k:'orto',nome:'Bem Estar Orto',proc:'261 eventos',m:149.90,diff:['Ortodontia completa']},
+      {k:'orto_white',nome:'Bem Estar Orto White',proc:'264 eventos',m:170.50,diff:['Ortodontia','Clareamento']}
+    ],
+    PJ:[
+      {k:'integral',nome:'Integral',proc:'198 eventos',f1:25.20,f2:20.09,f3:14.90,diff:['Coberturas essenciais']},
+      {k:'doc_white',nome:'Integral DOC White',proc:'213 eventos',f1:47.42,f2:44.90,f3:38.90,diff:['Doc. ortodôntica','Clareamento','Bruxismo']},
+      {k:'master',nome:'Master',proc:'299 eventos',f1:108.44,f2:105.25,f3:77.90,diff:['Ortodontia','Doc. + Próteses']}
+    ]},
+  dentaluni:{label:'Dental Uni', base:'Sem carência · cartão',
+    PF:[
+      {k:'essencial',nome:'Essencial',proc:'191 proc.',a:43.89,b:39.50,diff:['Rol ANS essencial','Extração do siso']},
+      {k:'amplo_doc',nome:'Amplo DOC',proc:'225 proc.',a:55.00,b:49.50,diff:['Doc. ortodôntica','Clareamento','Facetas']},
+      {k:'elite',nome:'Elite',proc:'264 proc.',a:71.50,b:64.35,diff:['Ortodontia (aparelho fixo)','Clareamento','Próteses ANS']}
+    ],
+    PJ:[
+      {k:'essencial',nome:'Essencial',proc:'191 proc.',f1:24.92,f2:21.19,f3:17.71,diff:['Rol ANS essencial']},
+      {k:'amplo_doc',nome:'Amplo DOC',proc:'225 proc.',f1:30.49,f2:26.31,f3:22.45,diff:['Doc. ortodôntica','Clareamento']},
+      {k:'elite',nome:'Elite',proc:'264 proc.',f1:33.59,f2:28.97,f3:24.67,diff:['Ortodontia','Clareamento','Próteses ANS']}
+    ]}
+};
+const ORDER=['amil','odontoprev','dentaluni'];
+
+const st={tipo:null,vidas:1,nome:'',sel:{amil:'',odontoprev:'',dentaluni:''}};
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const brl=n=>'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function planByKey(op,k){return (OPS[op][st.tipo]||[]).find(p=>p.k===k);}
+function precoOf(op,p){const v=st.vidas;
+  if(op==='amil')return st.tipo==='PF'?(v<=2?p.ind:p.fam):(v<=29?p.I:p.II);
+  if(op==='odontoprev')return st.tipo==='PF'?p.m:(v<=29?p.f1:(v<=99?p.f2:p.f3));
+  return st.tipo==='PF'?(v<=2?p.a:p.b):(v<=14?p.f1:(v<=29?p.f2:p.f3));
+}
+function carenciaOf(op,k){const v=st.vidas;
+  if(op==='amil')return st.tipo==='PJ'?(v>=30?'Sem carência':'Padrão (até 180 dias)'):'Padrão (24h a 180 dias)';
+  if(op==='odontoprev'){if(st.tipo==='PJ')return k==='master'?(v<=29?'180 dias prótese/orto':(v<=99?'90 dias prótese/orto':'Sem carência')):'Sem carência';return 'Mensal (24h a 180 dias)';}
+  return st.tipo==='PJ'?(v>=30?'Isenção (30+ vidas)':'Pode haver carência'):'Carência zero (uso 24h)';
+}
+
+$$('[data-tipo]').forEach(b=>b.onclick=()=>{
+  st.tipo=b.dataset.tipo;$$('[data-tipo]').forEach(x=>x.classList.toggle('sel',x===b));
+  st.sel={amil:'',odontoprev:'',dentaluni:''};
+  const min=st.tipo==='PJ'?2:1,inp=$('#vidas');inp.min=min;if(st.vidas<min){st.vidas=min;inp.value=min;}
+  $('#lblNome').textContent=st.tipo==='PJ'?'Razão social / empresa':'Nome do cliente';
+  $('#s2').classList.remove('dim');$('#s3').classList.remove('dim');
+  buildSelectors();refreshSummary();
+});
+function setVidas(v){const min=st.tipo==='PJ'?2:1;v=Math.max(min,Math.min(99,v||min));st.vidas=v;$('#vidas').value=v;buildSelectors();refreshSummary();}
+$('#vplus').onclick=()=>setVidas(st.vidas+1);
+$('#vminus').onclick=()=>setVidas(st.vidas-1);
+$('#vidas').oninput=e=>{const n=parseInt(e.target.value,10);if(!isNaN(n))setVidas(n);};
+$('#vidas').onblur=e=>setVidas(parseInt(e.target.value,10));
+$('#nome').oninput=e=>{st.nome=e.target.value;};
+
+function buildSelectors(){
+  const wrap=$('#opSel');wrap.innerHTML='';if(!st.tipo)return;
+  ORDER.forEach(op=>{
+    const planos=OPS[op][st.tipo]||[];
+    const card=document.createElement('div');card.className='osel'+(st.sel[op]?' has':'');
+    let opts='<option value="">— não incluir —</option>';
+    planos.forEach(p=>{opts+=`<option value="${p.k}"${st.sel[op]===p.k?' selected':''}>${p.nome} — ${brl(precoOf(op,p))}/vida</option>`;});
+    const sel=st.sel[op]?planByKey(op,st.sel[op]):null;
+    const px=sel?`<b>${brl(precoOf(op,sel))}</b> /vida · total ${brl(precoOf(op,sel)*st.vidas)}/mês`:'Selecione um plano';
+    card.innerHTML=`<div class="oh"><img src="${LOGOS[op]}" alt="${OPS[op].label}"></div>
+      <select data-op="${op}">${opts}</select>
+      <div class="opx">${px}</div>`;
+    wrap.appendChild(card);
+  });
+  $$('#opSel select').forEach(s=>s.onchange=()=>{st.sel[s.dataset.op]=s.value;buildSelectors();refreshSummary();});
+}
+function selectedCount(){return ORDER.filter(op=>st.sel[op]).length;}
+function refreshSummary(){
+  $('#sumTipo').textContent=st.tipo?(st.tipo==='PF'?'Pessoa Física':'Pessoa Jurídica'):'—';
+  $('#sumVidas').textContent=st.tipo?st.vidas+(st.vidas>1?' vidas':' vida'):'—';
+  const n=selectedCount();
+  $('#sumOps').textContent=n+(n===1?' selecionada':' selecionadas');
+  $('#gerar').disabled=n<2;
+}
+
+function fmtData(iso){const[a,m,d]=iso.split('-');return `${d}/${m}/${a}`;}
+
+$('#gerar').onclick=()=>{
+  const sels=ORDER.filter(op=>st.sel[op]).map(op=>{
+    const p=planByKey(op,st.sel[op]);const pv=precoOf(op,p);
+    return {op,label:OPS[op].label,base:OPS[op].base,logo:LOGOS[op],nome:p.nome,proc:p.proc,pv,total:pv*st.vidas,car:carenciaOf(op,p.k),diff:p.diff};
+  });
+  const minTotal=Math.min(...sels.map(s=>s.total));
+  const hoje=fmtData(new Date().toISOString().slice(0,10));
+  const nome=st.nome.trim()||(st.tipo==='PJ'?'Empresa cliente':'Cliente');
+  const cols=sels.map(s=>`
+    <div class="cmp-col${s.total===minTotal?' best':''}">
+      <div class="cmp-h"><div class="oimg"><img src="${s.logo}" alt="${s.label}"></div><div class="pl">${s.nome}</div><div class="pr">${s.label} · ${s.proc}</div></div>
+      ${s.total===minTotal?'<span class="cmp-best-tag">★ Menor preço mensal</span>':''}
+      <div class="cmp-price"><div class="pv">${brl(s.pv)}<small>/vida·mês</small></div><div class="tot">Total: ${brl(s.total)}/mês</div></div>
+      <div class="cmp-b">
+        <div class="cmp-attr car"><span class="lab">Carência</span><span class="val">${s.car}</span></div>
+        <div class="cmp-attr"><span class="lab">Abrangência</span>Nacional · sem coparticipação</div>
+        <div class="cmp-attr"><span class="lab">Diferenciais</span><ul class="cmp-diff">${s.diff.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+        <div class="cmp-attr"><span class="lab">Base do valor</span>${s.base}</div>
+      </div>
+    </div>`).join('');
+
+  $('#docContent').innerHTML=`
+    <div class="doc-head">
+      <div class="pc-logo" style="--pc:30px"><div class="pc-name"><span class="p">P</span><span class="pc-gap">&nbsp;</span><span class="lane">lane</span><span class="corp">corp</span></div><div class="pc-tag">Soluções em Benefícios e Seguros</div></div>
+      <div class="dh-r">Comparativo<br>Odontológico</div>
+    </div>
+    <div class="title-bar"><span class="tb-tag">Comparativo</span><h1>COMPARATIVO DE PLANOS ODONTOLÓGICOS</h1></div>
+    <div class="inforow">
+      <div class="ic"><div class="k">${st.tipo==='PJ'?'Empresa':'Cliente'}</div><div class="v">${nome}</div></div>
+      <div class="ic"><div class="k">Vidas</div><div class="v">${st.vidas} ${st.vidas>1?'vidas':'vida'} · ${st.tipo==='PJ'?'Empresarial':'Pessoa Física'}</div></div>
+      <div class="ic"><div class="k">Emissão</div><div class="v">${hoje}</div></div>
+    </div>
+    <div class="cmp" style="--cols:${sels.length}">${cols}</div>
+    <div class="cmp-note">⭐ <b>Menor preço mensal</b> destacado entre as opções selecionadas. A escolha ideal considera também cobertura (procedimentos), carência e diferenciais de cada plano — não apenas o preço. <b>Base de comparação:</b> mensalidade por vida para ${st.vidas} ${st.vidas>1?'vidas':'vida'} (${st.tipo==='PJ'?'empresarial':'pessoa física'}); cada operadora segue a regra de faixa/condição da sua própria tabela.</div>
+
+    <div class="doc-foot">
+      <div class="consultor"><div class="cl">Consultor PlaneCorp</div><div class="cn">Atendimento exclusivo</div><div class="cd"><b>(41) 9990-2288</b><br>contato@planecorp.com.br<br><b>www.planecorp.com.br</b></div></div>
+      <div class="legal"><h4>Informações importantes</h4><p>Comparativo de referência elaborado pela PlaneCorp a partir das tabelas vigentes de Amil Dental, OdontoPrev e Dental Uni. Valores e condições podem sofrer alteração e variam por região, forma de pagamento, faixa de vidas e carência; confirme a tabela vigente de cada operadora antes da contratação. Documento comercial sem caráter contratual; coberturas e carências seguem o contrato e o Rol ANS vigente (Lei nº 9.656/98). PlaneCorp — corretora autorizada.</p></div>
+    </div>
+    <div class="doc-strip"><span>PlaneCorp · Soluções em Benefícios e Seguros</span><span>Comparativo Odontológico · Página Única</span></div>`;
+
+  document.body.classList.add('show-proposal');$('#stage').scrollTop=0;
+};
+$('#voltar').onclick=()=>document.body.classList.remove('show-proposal');
+$('#imprimir').onclick=()=>window.print();
+refreshSummary();
+</script>
+</body>
+</html>
